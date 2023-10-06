@@ -6,7 +6,7 @@ myAnd True True = True
 myAnd _ _ = False
 
 -- 1.2 operator
-infix 1 *$*
+infixl 3 *$*
 (*$*) :: Bool -> Bool -> Bool
 True *$* True = True
 _ *$* _ = False
@@ -380,16 +380,43 @@ binTreeOfStringsCopy :: StringTree
 binTreeOfStringsCopy = binTreeOfStrings
 
 -- | Создайте синоним типов для дерева на числах `IntTree` и дерево `binTreeOfInts`.
+
+type IntTree = BinaryTree Int
 --     - раскомментируйте строку с типом, когда объявите `IntTree`
 --
--- binTreeOfInts :: IntTree
-binTreeOfInts = undefined
+binTreeOfInts :: IntTree
+binTreeOfInts = 
+  Node 50
+    (Node 25
+      (Node 15
+        (Node 4 Leaf Leaf)
+        (Node 17 Leaf Leaf)
+      )
+      (Node 31 Leaf Leaf)
+    )
+    (Node 62
+      (Node 55 Leaf Leaf)
+      (Node 88 Leaf Leaf)
+    )
+
 
 -- Напишите поиск элемента в таком дереве.
 --    - раскомментируйте строку с типом, когда объявите `IntTree`
 --    - напишите тесты
 --
--- isPresented :: Int -> IntTree -> Bool
-isPresented = undefined
+isPresented :: Int -> IntTree -> Bool
+isPresented _ Leaf = False
+isPresented el (Node val left right)
+  | el == val = True
+  | el < val = isPresented el left 
+  | otherwise = isPresented el right
+
+
+testIsPresented :: Bool
+testIsPresented = and
+  [isPresented 50 binTreeOfInts == True, 
+  isPresented 31 binTreeOfInts == True, 
+  isPresented 13 binTreeOfInts == False
+  ]
 
 -------------------------------------------------------------------------------
